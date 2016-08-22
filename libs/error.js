@@ -1,8 +1,8 @@
 'use strict';
 
 const ErrorTypes = require('./error-types');
-const Async = require('async');
-const _ = require('lodash');
+const each = require('async/each');
+const includes = require('lodash/includes');
 
 /**
  * @summary Error class for delivering errors for the collins system
@@ -15,10 +15,10 @@ class CoreError extends Error {
     this.name = this.constructor.name;
     this.data = data || {};
     this.type = type;
-    Async.each(
+    each(
       type.split(':'),
       function checkType (errorType, cb) {
-        if (!_.includes(ErrorTypes, errorType.toLowerCase())) {
+        if (!includes(ErrorTypes, errorType.toLowerCase())) {
           cb(true);
         } else {
           cb(null);
