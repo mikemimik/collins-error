@@ -26,7 +26,7 @@ class CoreError extends Error {
       },
       (err) => {
         if (err) {
-          throw new SlackError('TypeError', {
+          throw new CoreError('TypeError', {
             details: 'invalid error type give to error object'
           });
         } else {
