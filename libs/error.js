@@ -53,7 +53,9 @@ class CoreError extends Error {
   static convert (type, error) {
     // INFO: given an Error, return a SlackError
     let details = { details: error.message };
-    return new CoreError(type, details);
+    let convertedError = new CoreError(type, details);
+    convertedError.stack = error.stack;
+    return convertedError;
   }
 }
 
