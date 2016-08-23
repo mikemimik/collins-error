@@ -51,8 +51,12 @@ class CoreError extends Error {
   }
 
   static convert (type, error) {
-    // INFO: given an Error, return a SlackError
-    let details = { details: error.message };
+    if (error) {
+      if (!(error instanceof Error)) {
+        throw new CoreError('Invalid:Input', 'invalid function call');
+      }
+    }
+    let details = { details: error ? error.message : null };
     let convertedError = new CoreError(type, details);
     convertedError.stack = error.stack;
     return convertedError;
