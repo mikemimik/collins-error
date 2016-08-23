@@ -33,9 +33,12 @@ describe('CoreError', () => {
       Assert.equal(foreignError instanceof Error, true);
       Assert.equal(foreignError instanceof CoreError, false);
     });
+    let convertedError = CoreError.convert('TestError', foreignError);
     it('should convert Error into CoreError', () => {
-      let convertedError = CoreError.convert('TestError', foreignError);
       Assert.equal(convertedError instanceof CoreError, true);
+    });
+    it('should transfer stack trace to new error object', () => {
+      Assert.equal(convertedError.stack, foreignError.stack);
     });
   });
 });
