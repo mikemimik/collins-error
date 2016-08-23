@@ -27,18 +27,64 @@ describe('CoreError', () => {
       noop(badError);
     });
   });
-  describe('convert', () => {
-    let foreignError = new Error('testing');
-    it('takes an Error', () => {
-      Assert.equal(foreignError instanceof Error, true);
-      Assert.equal(foreignError instanceof CoreError, false);
+  describe('CoreError#convert', () => {
+    it('throws if second param is not an Error', () => {
+      Assert.throws(
+        () => {
+          CoreError.convert('TestError', {});
+        },
+        'invalid function call'
+      );
+      Assert.throws(
+        () => {
+          CoreError.convert('TestError', 1);
+        },
+        'invalid function call'
+      );
+      Assert.throws(
+        () => {
+          CoreError.convert('TestError', 'string');
+        },
+        'invalid function call'
+      );
+      Assert.throws(
+        () => {
+          CoreError.convert('TestError', () => {});
+        },
+        'invalid function call'
+      );
     });
-    let convertedError = CoreError.convert('TestError', foreignError);
     it('should convert Error into CoreError', () => {
+      let foreignError = new Error('testing');
+      let convertedError = CoreError.convert('TestError', foreignError);
       Assert.equal(convertedError instanceof CoreError, true);
     });
-    it('should transfer stack trace to new error object', () => {
-      Assert.equal(convertedError.stack, foreignError.stack);
+    it('should convert exceptions into CoreError', () => {
+      try {
+        throw new Error('test exception');
+      } catch (exception) {
+        let convertedError = CoreError.convert('TestError', exception);
+        Assert.equal(convertedError instanceof CoreError, true);
+      }
+    });
+    it('should contain *shallow* stack from passed exception', () => {
+      try {
+        throw new Error('test exception');
+      } catch (exception) {
+        let convertedError = CoreError.convert('TestError', exception);
+        Assert.deepEqual(
+          exception.stack.split('\n').slice(1, 5),
+          convertedError.stack.split('\n').slice(1, 5)
+        );
+      }
+    });
+    it('should contain *shallow* stack from passed error', () => {
+      let foreignError = new Error('testing');
+      let convertedError = CoreError.convert('TestError', foreignError);
+      Assert.deepEqual(
+        foreignError.stack.split('\n').slice(1, 5),
+        convertedError.stack.split('\n').slice(1, 5)
+      );
     });
   });
 });
