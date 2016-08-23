@@ -1,6 +1,6 @@
 {
   "name": "collins-error",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Custom error class used by the collins system",
   "main": "index.js",
   "scripts": {
