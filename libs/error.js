@@ -63,4 +63,17 @@ class CoreError extends Error {
   }
 }
 
+/**
+ * @summary construct static stack for error
+ * @param  {String} fromStack `.stack` property from error being converted.
+ * @param  {CoreError} constructObj CoreError object to receive stack.
+ * @return {String}  Static stack to be assigned to CoreError object.
+ */
+function constructStack (fromStack, constructObj) {
+  return constructObj.stack.split('\n')[0] + '\n' +
+    fromStack
+      .replace(/^[^\(]+?[\n$]/gm, '')
+      .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@');
+}
+
 module.exports = CoreError;
