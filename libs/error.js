@@ -58,7 +58,7 @@ class CoreError extends Error {
     }
     let details = { details: error ? error.message : null };
     let convertedError = new CoreError(type, details);
-    convertedError.stack = error.stack;
+    convertedError.stack = constructStack(error.stack, convertedError);
     return convertedError;
   }
 }
