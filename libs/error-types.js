@@ -13,6 +13,7 @@ let ErrorTypes = [
   'Config',
   'Input',
   'File',
+  'Usage',
   /* --- */
   'TypeError',
   'TestError'
